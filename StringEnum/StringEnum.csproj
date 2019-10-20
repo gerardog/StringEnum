@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <AssemblyName>StringEnum</AssemblyName>
+    <RootNamespace>StringEnum</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Gerardo Grignoli</Authors>
+    <RepositoryUrl>https://github.com/gerardog/StringEnum</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>string valued enum enums enumstring stringenum</PackageTags>
+    <Version>0.0.1</Version>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>StringEnumKeyFile.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <Description>StringEnum is a base class for creating string-valued enums in .NET.</Description>
+    <Copyright>2019 Gerardo Grignoli</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+</Project>
