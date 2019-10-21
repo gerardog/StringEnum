@@ -6,6 +6,21 @@ using System.Reflection;
 
 namespace StringEnum
 {
+    /// <summary>
+    /// Base class for creating string-valued enums in .NET.<br/>
+    /// Provides static Parse() and TryParse() methods and implicit cast to string.
+    /// </summary>
+    /// <example> 
+    /// <code>
+    /// class Color : StringEnum &lt;Color&gt;
+    /// {
+    ///     public static readonly Color Blue = New("Blue");
+    ///     public static readonly Color Red = New("Red");
+    ///     public static readonly Color Green = New("Green");
+    /// }
+    /// </code>
+    /// </example>
+    /// <typeparam name="T">The string-valued enum type. (i.e. class Color : StringEnum&lt;Color&gt;)</typeparam>
     [JsonConverter(typeof(StringEnumJsonConverter))]
     public abstract class StringEnum<T> : IEquatable<T> where T : StringEnum<T>, new()
     {
@@ -31,21 +46,31 @@ namespace StringEnum
         bool IEquatable<T>.Equals(T other) => this.Value.Equals(other.Value);
         public override int GetHashCode() => Value.GetHashCode();
 
-        public static T Parse(string name, bool caseSensitive = false)
+        /// <summary>
+        /// Parse the <paramref name="value"/> specified and returns a valid <typeparamref name="T"/> or else throws InvalidOperationException.
+        /// </summary>
+        /// <param name="value">The string value representad by an instance of <typeparamref name="T"/>. Matches by string value, not by the member name.</param>
+        /// <param name="caseSensitive">If true, the strings must match case sensitivity.</param>
+        public static T Parse(string value, bool caseSensitive = false)
         {
-            var result = TryParse(name, caseSensitive);
+            var result = TryParse(value, caseSensitive);
             if (result == null)
-                throw new InvalidOperationException((name == null ? "null" : $"'{name}'") + $" is not a valid {typeof(T).Name}");
+                throw new InvalidOperationException((value == null ? "null" : $"'{value}'") + $" is not a valid {typeof(T).Name}");
 
             return result;
         }
 
-        public static T TryParse(string name, bool caseSensitive = false)
+        /// <summary>
+        /// Parse the <paramref name="value"/> specified and returns a valid <typeparamref name="T"/> or else returns null.
+        /// </summary>
+        /// <param name="value">The string value representad by an instance of <typeparamref name="T"/>. Matches by string value, not by the member name.</param>
+        /// <param name="caseSensitive">If true, the strings must match case sensitivity.</param>
+        public static T TryParse(string value, bool caseSensitive = false)
         {
-            if (name == null) return null;
+            if (value == null) return null;
             if (valueList.Count == 0) System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(T).TypeHandle); // force static fields initialization
-            var field = valueList.FirstOrDefault(f => f.Value.Equals(name,
-                    caseSensitive ? StringComparison.Ordinal 
+            var field = valueList.FirstOrDefault(f => f.Value.Equals(value,
+                    caseSensitive ? StringComparison.Ordinal
                                   : StringComparison.OrdinalIgnoreCase));
             // Not using InvariantCulture because it's only supported in NETStandard >= 2.0
 

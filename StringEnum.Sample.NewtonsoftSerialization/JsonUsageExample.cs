@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace StringEnum.Sample.NewtonsoftSerialization
 {
     [TestClass]
-    public class UsageTest
+    public class JsonUsageExample
     {
         const string expected = "{\"MyAnimal\":\"Cat\",\"MyString\":\"HelloWorld\"}";
 

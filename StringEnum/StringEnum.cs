@@ -5,7 +5,8 @@ using System.Linq;
 namespace StringEnum
 {
     /// <summary>
-    /// Base class for string-valued enums.<br/>Provides implicit cast to string and static Parse() and TryParse() methods.
+    /// Base class for creating string-valued enums in .NET.<br/>
+    /// Provides static Parse() and TryParse() methods and implicit cast to string.
     /// </summary>
     /// <example> 
     /// <code>

@@ -1,50 +1,74 @@
 ﻿# StringEnum Newtonsoft.Json serialization
 
-Json serialization was not built into the NuGet package to avoid a probably unneeded dependency to `Newtonsoft.Json`.
+Json serialization was not built into the NuGet package to avoid a possibly unneeded dependency on `Newtonsoft.Json`.
 
 To add `Json.Net` serialization support you need the `StringEnumJsonConverter` class.
 
+This extended version file has everything in one: [StringEnum.cs](StringEnum.cs).
+
+Or:
+
 - Add [StringEnumJsonConverter](StringEnum.cs#59) class to your code.
 
-      public class StringEnumJsonConverter : JsonConverter
-      {
-          public override bool CanConvert(Type objectType)
-          {
-              return IsSubclassOfRawGeneric(typeof(StringEnum<>), objectType);
-          }
+    ``` csharp
+    using Newtonsoft.Json;
+    using System;
+    using System.Reflection;
 
-          public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-          {
-              writer.WriteValue(value.ToString());
-          }
+    public class StringEnumJsonConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return IsSubclassOfRawGeneric(typeof(StringEnum<>), objectType);
+        }
 
-          public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-          {
-              string s = (string)reader.Value;
-              return typeof(StringEnum<>)
-                      .MakeGenericType(objectType)
-                      .GetMethod("Parse", BindingFlags.Public | BindingFlags.Static)
-                      .Invoke(null, new object[] { s, false });
-              ;
-          }
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            writer.WriteValue(value.ToString());
+        }
 
-          static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
-          {
-              while (toCheck != null && toCheck != typeof(object))
-              {
-                  var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
-                  if (generic == cur)
-                  {
-                      return true;
-                  }
-                  toCheck = toCheck.BaseType;
-              }
-              return false;
-          }
-      }
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            string s = (string)reader.Value;
+            return typeof(StringEnum<>)
+                    .MakeGenericType(objectType)
+                    .GetMethod("Parse", BindingFlags.Public | BindingFlags.Static)
+                    .Invoke(null, new object[] { s, false });
+        }
 
-- Adding the following attribute to the `StringEnum` base class to support all instances, OR to all the StringEnums implementations. 
+        static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
+        {
+            while (toCheck != null && toCheck != typeof(object))
+            {
+                var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+                if (generic == cur)
+                {
+                    return true;
+                }
+                toCheck = toCheck.BaseType;
+            }
+            return false;
+        }
+    }
+    ```
 
-      [Newtonsoft.Json.JsonConverter(typeof(StringEnumJsonConverter))]
+- Adding the following attribute to the `StringEnum` base class to support all instances, or add it to your specific StringEnums: 
 
-TL;DR; This extended version has everything in one. [StringEnum.cs](StringEnum.cs).
+``` csharp
+    [Newtonsoft.Json.JsonConverter(typeof(StringEnumJsonConverter))]
+```
+
+- You can also avoid the attributes and inject the `StringEnumJsonConverter` when you setup your (de)serialization:
+
+``` csharp
+    //serialization
+    var obj = new { Color = Color.Red, MyString = "HelloWorld" };
+    var jsonString = JsonConvert.SerializeObject(obj, new StringEnumConverter());
+
+    //deserealization
+    var settings = new JsonSerializerSettings();
+    settings.Converters.Add(new StringEnumConverter()); 
+
+    var result = JsonConvert.DeserializeAnonymousType(jsonString, obj, settings);
+    Assert.AreEqual(Color.Red, result.Color);
+```

@@ -8,14 +8,44 @@
     <Authors>Gerardo Grignoli</Authors>
     <RepositoryUrl>https://github.com/gerardog/StringEnum</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>string valued enum enums enumstring stringenum</PackageTags>
-    <Version>0.0.1</Version>
+    <PackageTags>string valued enum enumstring stringenum</PackageTags>
+    <Version>0.0.2</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>StringEnumKeyFile.pfx</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
-    <Description>StringEnum is a base class for creating string-valued enums in .NET.</Description>
+    <Description>StringEnum is a base class for creating string-valued enums in .NET.
+
+ Features
+- Your StringEnum interface looks somewhat similar to a regular enum:
+- Intellisense will suggest the enum name if the class is annotated with the xml comment `&lt;completitionlist&gt;`. (Works in both C# and VB)
+
+Usage:
+
+///&lt;completionlist cref="HexColor"/&gt; 
+class HexColor : StringEnum&lt;HexColor&gt;
+{
+    public static readonly HexColor Blue = New("#FF0000");
+    public static readonly HexColor Green = New("#00FF00");
+    public static readonly HexColor Red = New("#000FF");
+}
+
+// Static Parse Method
+HexColor.Parse("#FF0000") // =&gt; HexColor.Red
+HexColor.Parse("#ff0000", caseSensitive: false) // =&gt; HexColor.Red
+HexColor.Parse("invalid") // =&gt; throws InvalidOperationException
+
+// Static TryParse method.
+HexColor.TryParse("#FF0000") // =&gt; HexColor.Red
+HexColor.TryParse("#ff0000", caseSensitive: false) // =&gt; HexColor.Red
+HexColor.TryParse("invalid") // =&gt; null
+
+// Conversion from your `StringEnum` to `string`
+string myString1 = HexColor.Red.ToString(); // =&gt; "#FF0000"
+string myString2 = HexColor.Red; // =&gt; "#FF0000" (implicit cast)
+</Description>
     <Copyright>2019 Gerardo Grignoli</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/gerardog/StringEnum</PackageProjectUrl>
   </PropertyGroup>
 
 </Project>
