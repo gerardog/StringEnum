@@ -9,9 +9,9 @@ namespace StringEnum.Tests
     [Newtonsoft.Json.JsonConverter(typeof(StringEnumJsonConverter))]
     class JsonSerializableColor : StringEnum<JsonSerializableColor>
     {
-        public static readonly JsonSerializableColor Blue = New("Blue");
-        public static readonly JsonSerializableColor Red = New("Red");
-        public static readonly JsonSerializableColor Green = New("Green");
+        public static readonly JsonSerializableColor Blue = Create("Blue");
+        public static readonly JsonSerializableColor Red = Create("Red");
+        public static readonly JsonSerializableColor Green = Create("Green");
     }
 
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClass]

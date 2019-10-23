@@ -9,7 +9,7 @@ namespace StringEnum.Tests
     {
         [TestMethod]
         public void StringEnumComparisonTests()
-        { 
+        {
             Color red1 = Color.Red;
             Color red2 = Color.Parse("Red");
             Color blue1 = Color.Blue;
@@ -57,51 +57,51 @@ namespace StringEnum.Tests
         public void StringComparisonTests()
         {
             // Case sensitive same value.
-            Assert.IsTrue(ColorWithImplicitNew.Red == "Red");
-            Assert.IsTrue("Red" == ColorWithImplicitNew.Red);
-            Assert.IsTrue(ColorWithImplicitNew.Red.Equals("Red"));
-            Assert.IsTrue(("Red").Equals(ColorWithImplicitNew.Red));
-            Assert.IsFalse(ColorWithImplicitNew.Red != "Red");
-            Assert.IsFalse("Red" != ColorWithImplicitNew.Red);
+            Assert.IsTrue(Color.Red == "Red");
+            Assert.IsTrue("Red" == Color.Red);
+            Assert.IsTrue(Color.Red.Equals("Red"));
+            Assert.IsTrue(("Red").Equals(Color.Red));
+            Assert.IsFalse(Color.Red != "Red");
+            Assert.IsFalse("Red" != Color.Red);
 
             // Case sensitive different case.
-            Assert.IsFalse(ColorWithImplicitNew.Red == "red");
-            Assert.IsFalse("red" == ColorWithImplicitNew.Red);
-            Assert.IsFalse(ColorWithImplicitNew.Red.Equals("red"));
-            Assert.IsFalse(("red").Equals(ColorWithImplicitNew.Red));
-            Assert.IsTrue(ColorWithImplicitNew.Red != "red");
-            Assert.IsTrue("red" != ColorWithImplicitNew.Red);
+            Assert.IsFalse(Color.Red == "red");
+            Assert.IsFalse("red" == Color.Red);
+            Assert.IsFalse(Color.Red.Equals("red"));
+            Assert.IsFalse(("red").Equals(Color.Red));
+            Assert.IsTrue(Color.Red != "red");
+            Assert.IsTrue("red" != Color.Red);
 
             // Case Insensitive same case/value.
-            Assert.IsTrue(ColorWithImplicitNew.Red == "Red");
-            Assert.IsTrue("Red" == ColorWithImplicitNew.Red);
-            Assert.IsTrue(ColorWithImplicitNew.Red.Equals("Red"));
-            Assert.IsTrue("Red".Equals(ColorWithImplicitNew.Red));
-            Assert.IsFalse(ColorWithImplicitNew.Red != "Red");
-            Assert.IsFalse("Red" != ColorWithImplicitNew.Red);
+            Assert.IsTrue(Color.Red == "Red");
+            Assert.IsTrue("Red" == Color.Red);
+            Assert.IsTrue(Color.Red.Equals("Red"));
+            Assert.IsTrue("Red".Equals(Color.Red));
+            Assert.IsFalse(Color.Red != "Red");
+            Assert.IsFalse("Red" != Color.Red);
 
             // Case Insensitive different case.
-            Assert.IsFalse(ImplicitParseColor.Red == "red");
-            Assert.IsFalse("red" == ImplicitParseColor.Red);
-            Assert.IsFalse(ImplicitParseColor.Red.Equals("red"));
-            Assert.IsFalse("red".Equals(ImplicitParseColor.Red));
-            Assert.IsTrue(ImplicitParseColor.Red != "red");
-            Assert.IsTrue("red" != ImplicitParseColor.Red);
+            Assert.IsFalse(Color.Red == "red");
+            Assert.IsFalse("red" == Color.Red);
+            Assert.IsFalse(Color.Red.Equals("red"));
+            Assert.IsFalse("red".Equals(Color.Red));
+            Assert.IsTrue(Color.Red != "red");
+            Assert.IsTrue("red" != Color.Red);
 
             // Case sensitive different values
-            Assert.IsFalse(ColorWithImplicitNew.Red == "Blue");
-            Assert.IsFalse("Blue" == ColorWithImplicitNew.Red);
-            Assert.IsFalse(ColorWithImplicitNew.Red.Equals("Blue"));
-            Assert.IsFalse("Blue".Equals(ColorWithImplicitNew.Red));
-            Assert.IsTrue(ColorWithImplicitNew.Red != "Blue");
-            Assert.IsTrue("Blue" != ColorWithImplicitNew.Red);
+            Assert.IsFalse(Color.Red == "Blue");
+            Assert.IsFalse("Blue" == Color.Red);
+            Assert.IsFalse(Color.Red.Equals("Blue"));
+            Assert.IsFalse("Blue".Equals(Color.Red));
+            Assert.IsTrue(Color.Red != "Blue");
+            Assert.IsTrue("Blue" != Color.Red);
 
             // null value comparisons
-            Assert.IsFalse(null == ColorWithImplicitNew.Red);
-            Assert.IsFalse(ColorWithImplicitNew.Red == null);
-            Assert.IsTrue(null != ColorWithImplicitNew.Red);
-            Assert.IsTrue(ColorWithImplicitNew.Red != null);
-            Assert.IsFalse(ColorWithImplicitNew.Red.Equals(null));
+            Assert.IsFalse(null == Color.Red);
+            Assert.IsFalse(Color.Red == null);
+            Assert.IsTrue(null != Color.Red);
+            Assert.IsTrue(Color.Red != null);
+            Assert.IsFalse(Color.Red.Equals(null));
         }
 
         [TestMethod]
@@ -134,23 +134,27 @@ namespace StringEnum.Tests
             Color a = Color.Parse("Red", true);
             Assert.AreEqual(a, Color.Red);
 
-            ImplicitParseColor b = "Red";
-            Assert.AreEqual(b, ImplicitParseColor.Red);
+            ColorWithImplicitParse b = "Red";
+            Assert.AreEqual(b, ColorWithImplicitParse.Red);
         }
 
         [TestMethod]
         public void ParseTest_CaseInsensitiveOK()
         {
-            ImplicitParseColor a = ImplicitParseColor.Parse("red");
+            Color a = Color.Parse("red", false);
+            Assert.AreEqual(a, Color.Red);
+
+            ColorWithImplicitParse b = "red";
+            Assert.AreEqual(b, ColorWithImplicitParse.Red);
         }
 
         [TestMethod]
         public void ParseTest_ReferenceEquals()
         {
-            var a = (ImplicitParseColor)"red";
-            var b = ImplicitParseColor.Parse("red",false);
-            var c = ImplicitParseColor.Parse("Red", true);
-            var d = ImplicitParseColor.Red;
+            var a = (ColorWithImplicitParse)"red";
+            var b = ColorWithImplicitParse.Parse("red", false);
+            var c = ColorWithImplicitParse.Parse("Red", true);
+            var d = ColorWithImplicitParse.Red;
 
             Assert.IsTrue(object.ReferenceEquals(a, b));
             Assert.IsTrue(object.ReferenceEquals(a, c));
@@ -161,23 +165,25 @@ namespace StringEnum.Tests
         [ExpectedException(typeof(InvalidOperationException))]
         public void ParseTest_CaseInsensitiveShouldFail()
         {
-            ImplicitParseColor a = ImplicitParseColor.Parse("not a color");
+            ColorWithImplicitParse a = ColorWithImplicitParse.Parse("not a color");
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ParseTest_CaseSensitiveShouldFail()
         {
-            ColorWithImplicitNew  a = ColorWithImplicitNew.Parse("red", true);
+            ColorWithImplicitCreate a = ColorWithImplicitCreate.Parse("red", true);
         }
 
         [TestMethod]
         public void AnyString_OK()
         {
-            ColorWithImplicitNew myColor;
+            ColorWithImplicitCreate myColor = "Red";
+            Assert.IsTrue("Red" == myColor);
+            Assert.IsTrue("Red".Equals(myColor));
 
-            myColor = (ColorWithImplicitNew)"Violet";
-            Assert.IsTrue("Violet" == myColor);
+            myColor = (ColorWithImplicitCreate)"KindaViolet";
+            Assert.IsTrue("KindaViolet" == myColor);
         }
     }
 }

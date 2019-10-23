@@ -9,14 +9,15 @@
     <RepositoryUrl>https://github.com/gerardog/StringEnum</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>string valued enum enumstring stringenum</PackageTags>
-    <Version>0.0.2</Version>
+    <Version>0.1</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>StringEnumKeyFile.pfx</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
     <Description>StringEnum is a base class for creating string-valued enums in .NET.
 
- Features
-- Your StringEnum interface looks somewhat similar to a regular enum:
+Features
+- Your StringEnum interface looks similar to a regular enum
+- Provides static Parse() and TryParse() methods and implicit cast to string.
 - Intellisense will suggest the enum name if the class is annotated with the xml comment `&lt;completitionlist&gt;`. (Works in both C# and VB)
 
 Usage:
@@ -24,9 +25,9 @@ Usage:
 ///&lt;completionlist cref="HexColor"/&gt; 
 class HexColor : StringEnum&lt;HexColor&gt;
 {
-    public static readonly HexColor Blue = New("#FF0000");
-    public static readonly HexColor Green = New("#00FF00");
-    public static readonly HexColor Red = New("#000FF");
+    public static readonly HexColor Blue = Create("#FF0000");
+    public static readonly HexColor Green = Create("#00FF00");
+    public static readonly HexColor Red = Create("#000FF");
 }
 
 // Static Parse Method
