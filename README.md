@@ -37,11 +37,11 @@ class HexColor : StringEnum<HexColor>
     string myString2 = HexColor.Red; // => "#FF0000" (implicit cast)
 ```
 
-- Intellisense will suggest the enum name if the class is annotated with the xml comment `<completitionlist>`. (Works in both C# and VB): i.e.
+- Intellisense will suggest the enum name if the class is annotated with the xml comment `<completionlist>`. (Works in both C# and VB): i.e.
 
 ![Intellisense demo](images/intellisense.gif)
 
-### Instalation
+### Installation
 
 Either:
 
